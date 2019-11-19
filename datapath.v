@@ -29,8 +29,10 @@ module datapath(
 				counter <= counter + 1'b1;
 	end
 
-	assign x_out = x_in + counter[1:0];
-	assign y_out = y_in + counter[3:2];
+	assign x_out = x_in;
+	assign y_out = y_in;
+//	assign x_out = x_in + counter[1:0];
+//	assign y_out = y_in + counter[3:2];
 	assign colour_out = colour_in;
 	
 endmodule
