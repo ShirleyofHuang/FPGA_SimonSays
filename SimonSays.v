@@ -102,25 +102,29 @@ module SimonSays(
 		end
 		else begin
 		// Up
-			if (select_arrow == 4'b0000)
+			if (select_arrow == 4'b0000) begin
 				x_choose <= 8'b01001110;
 				y_choose <= 7'b0110110;
 				colour_choose <= 3'b111;
+				end
 			// Right
-			else if (select_arrow == 4'b0001)
+			else if (select_arrow == 4'b0001) begin
 				x_choose <= 8'b01010010;
 				y_choose <= 7'b0111010;
 				colour_choose <= 3'b111;
+				end
 			// Down
-			else if (select_arrow == 4'b0010)
+			else if (select_arrow == 4'b0010) begin
 				x_choose <= 8'b01001110;
 				y_choose <= 7'b0111110;
 				colour_choose <= 3'b111;
+				end
 			// Left
-			else if (select_arrow == 4'b0011)
+			else if (select_arrow == 4'b0011) begin
 				x_choose <= 8'b01001010;
 				y_choose <= 7'b0111010;
 				colour_choose <= 3'b111;
+				end
 			// Reset to white
 			else 
 				counter <= 4'b0000;
