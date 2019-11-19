@@ -1,6 +1,6 @@
-.datapath.v.bak
-.select_arrow.v.bak
-.SimonSays.v.bak
+#Ignore backup files
+*.bak
 
+#Ignore project flock file
 /db
 .SimonSays.quiproj.15092.rdr.flock
