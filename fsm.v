@@ -5,16 +5,16 @@ module fsmachine(reset_n,clock, direction, clicked);
 
 	reg[2:0] current_state, next_state;
 	
-	localparam DRAW_UP = 3'b0000,
-					DRAW_DOWN = 3'b0001,
-					DRAW_RIGHT = 3'b0010,
-					DRAW_LEFT = 3'b0011,
-					CHANGE_UP = 3'b0100,
-					CHANGE_DOWN = 3'b0101,
-					CHANGE_RIGHT = 3'b0110,
-					CHANGE_LEFT = 3'b0111;
-					READY_CHANGE = 3'b1000;
-					UPDATE_COLOR = 3'b1001;
+	localparam DRAW_UP = 4'b0000,
+					DRAW_DOWN = 4'b0001,
+					DRAW_RIGHT = 4'b0010,
+					DRAW_LEFT = 4'b0011,
+					CHANGE_UP = 4'b0100,
+					CHANGE_DOWN = 4'b0101,
+					CHANGE_RIGHT = 4'b0110,
+					CHANGE_LEFT = 4'b0111,
+					READY_CHANGE = 4'b1000,
+					UPDATE_COLOR = 4'b1001;
 //					PLOT = 3'b100;
 	always @(posedge clock) 
 	begin
@@ -50,45 +50,62 @@ module fsmachine(reset_n,clock, direction, clicked);
 		out_color = 3'b111; 
 		case(current_state)
 			DRAW_UP: begin 
-				out_x = coordinate_up;
-				out_y = coordinate_up;
+				out_x = 8'b01001110;
+				out_y = 7'b0110110;
 				end 
 			DRAW_DOWN: begin
-				out_x = coordinate_down;
-				out_y = coordinate_down; 
+				out_x = 8'b01001110;
+				out_y = 7'b0111110; 
 				end
 			DRAW_LEFT: begin
-				out_x = coordinate_left;
-				out_y = oordinate_left;
+				out_x = 8'b01001010;
+				out_y = 7'b0111010;
+				end
 			DRAW_RIGHT: begin
-				out_x = coordinate_right;
-				out_y = coordinate_right;
+				out_x = 8'b01010010;
+				out_y = 7'b0111010;
 				end
 			READY_CHANGE : begin
-				out_x = coordinate_ready;
-				out_y = coordinate_ready;
+				out_x = 8'b00000000;
+				out_y = 7'b0000000;
 			UPDATE_COLOR:begin
 				end
 			CHANGE_DOWN: begin
-				out_x = 
-				out_y = 
+				out_x = 8'b01001110;
+				out_y = 7'b0111110;
 				out_color = 3'b010;
 				end 
 			CHANGE_UP: begin
-				out_x = 
-				out_y = 
+				out_x = 8'b01001110;
+				out_y = 7'b0110110;
 				out_color = 3'b010;
 				end 
 			CHANGE_LEFT: begin
-				out_x = 
-				out_y = 
+				out_x = 8'b01001010;
+				out_y = 7'b0111010;
 				out_color = 3'b010;
 				end 
 			CHANGE_RIGHT: begin
-				out_x = 
-				out_y = 
+				out_x = 8'b01010010;
+				out_y = 7'b0111010;
 				out_color = 3'b010;
 				end 
 		endcase 
 		end 
 endmodule 
+
+//// Up
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0110110
+//
+//// Right
+//x_choose <= 8'b01010010
+//y_choose <= 7'b0111010
+//
+//// Down
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0111110
+//
+//// Left
+//x_choose <= 8'b01001010
+//y_choose <= 7'b0111010
