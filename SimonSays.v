@@ -66,7 +66,7 @@ module SimonSays(
     
 	wire selected_arrow;
 	reg [3:0]counter;
-	assign counter = 4b'0001;
+	assign counter = 4'b0001;
 	reg [2:0] colour_choose;
 	reg [7:0] x_choose;
 	reg [6:0] y_choose;
@@ -75,52 +75,52 @@ module SimonSays(
 	always @(posedge CLOCK_50) begin
 	// Up
 		if (counter == 4'b0001) begin
-			x_choose <= 8b'01001110;
-			y_choose <= 7b'0110110;
-			colour_choose <= 3b'111;
+			x_choose <= 8'b01001110;
+			y_choose <= 7'b0110110;
+			colour_choose <= 3'b111;
 		end
 		// Right
 		else if (counter == 4'b0010) begin
-			x_choose <= 8b'01010010;
-			y_choose <= 7b'0111010;
-			colour_choose <= 3b'111;
+			x_choose <= 8'b01010010;
+			y_choose <= 7'b0111010;
+			colour_choose <= 3'b111;
 		end
 		// Down
 		else if (counter == 4'b0011) begin
-			x_choose <= 8b'01001110;
-			y_choose <= 7b'0111110;
-			colour_choose <= 3b'111;
+			x_choose <= 8'b01001110;
+			y_choose <= 7'b0111110;
+			colour_choose <= 3'b111;
 		end
 		// Left
 		else if (counter == 4'b0100) begin
-			x_choose <= 8b'01001010;
-			y_choose <= 7b'0111010;
-			colour_choose <= 3b'111;
+			x_choose <= 8'b01001010;
+			y_choose <= 7'b0111010;
+			colour_choose <= 3'b111;
 		end
 		else if (counter == 4'b1111) begin
 			counter <= 4'b0000;
 		end
 		else begin
 		// Up
-			if (select_arrow == 4b'0000)
-				x_choose <= 8b'01001110;
-				y_choose <= 7b'0110110;
-				colour_choose <= 3b'111;
+			if (select_arrow == 4'b0000)
+				x_choose <= 8'b01001110;
+				y_choose <= 7'b0110110;
+				colour_choose <= 3'b111;
 			// Right
-			else if (select_arrow == 4b'0001)
-				x_choose <= 8b'01010010;
-				y_choose <= 7b'0111010;
-				colour_choose <= 3b'111;
+			else if (select_arrow == 4'b0001)
+				x_choose <= 8'b01010010;
+				y_choose <= 7'b0111010;
+				colour_choose <= 3'b111;
 			// Down
-			else if (select_arrow == 4b'0010)
-				x_choose <= 8b'01001110;
-				y_choose <= 7b'0111110;
-				colour_choose <= 3b'111;
+			else if (select_arrow == 4'b0010)
+				x_choose <= 8'b01001110;
+				y_choose <= 7'b0111110;
+				colour_choose <= 3'b111;
 			// Left
-			else if (select_arrow == 4b'0011)
-				x_choose <= 8b'01001010;
-				y_choose <= 7b'0111010;
-				colour_choose <= 3b'111;
+			else if (select_arrow == 4'b0011)
+				x_choose <= 8'b01001010;
+				y_choose <= 7'b0111010;
+				colour_choose <= 3'b111;
 			// Reset to white
 			else 
 				counter <= 4'b0000;
