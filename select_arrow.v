@@ -9,18 +9,23 @@ module select_arrow(
 						clock, 
 						up, 
 						right, 
-						up, 
 						down, 
 						left, 
 						direction_out
 						);
 	// clock to continuously update 
-	input up, right, down, left, clock;
-	output direction_out; 
+	input up;
+	input right;
+	input down;
+	input left;
+	input clock;
+	output reg [2:0]direction_out; 
 	
-	localparam direction = {up, right, down, left};
+	wire [3:0] direction;
+	assign direction = {up, right, down, left};
+	
 	always @(posedge clock) 
-		case (direction): 
+		case (direction)
 			4'b1000: direction_out <= 3'b000; // If up is pressed, arrow is up
 			4'b0100: direction_out <= 3'b001; // If right is pressed, arrow is right
 			4'b0010: direction_out <= 3'b010; // If down is pressed, arrow is down

@@ -66,15 +66,17 @@ module SimonSays(
     
 	wire selected_arrow;
 	reg [3:0]counter;
-	assign counter = 4'b0001;
 	reg [2:0] colour_choose;
 	reg [7:0] x_choose;
 	reg [6:0] y_choose;
 	
 	//counter
 	always @(posedge CLOCK_50) begin
-	// Up
-		if (counter == 4'b0001) begin
+		if (!resetn) begin
+			counter <= 4'b0000;
+		end
+		// Up
+		else if (counter == 4'b0001) begin
 			x_choose <= 8'b01001110;
 			y_choose <= 7'b0110110;
 			colour_choose <= 3'b111;

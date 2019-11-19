@@ -2,12 +2,12 @@ module datapath(
 					clk, 
 					resetn, 
 					x_in,
-					y_in
+					y_in,
 					colour_in,  
 					x_out, 
 					y_out, 
 					colour_out
-					)
+					);
 	input clk, resetn;
 	input [7:0] x_in;
 	input [6:0] y_in;
@@ -31,6 +31,6 @@ module datapath(
 
 	assign x_out = x_in + counter[1:0];
 	assign y_out = y_in + counter[3:2];
-	assign colour_out = colour;
+	assign colour_out = colour_in;
 	
 endmodule
