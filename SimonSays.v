@@ -64,85 +64,92 @@ module SimonSays(
 	// Put your code here. Your code should produce signals x,y,colour and writeEn/plot
 	// for the VGA controller, in addition to any other functionality your design may require.
     
-	wire selected_arrow;
+	wire [1:0] selected_arrow;
+	wire clicked;
+	
+	wire [3:0] counter_save;
+	assign counter_save = 4'b0000;
+	
 	reg [3:0]counter;
 	reg [2:0] colour_choose;
 	reg [7:0] x_choose;
 	reg [6:0] y_choose;
 	
-	//counter
-	always @(posedge CLOCK_50) begin
-		if (!resetn) begin
-			counter <= 4'b0000;
-		end
-		// Up
-		else if (counter == 4'b0001) begin
-			x_choose <= 8'b01001110;
-			y_choose <= 7'b0110110;
-			colour_choose <= 3'b111;
-		end
-		// Right
-		else if (counter == 4'b0010) begin
-			x_choose <= 8'b01010010;
-			y_choose <= 7'b0111010;
-			colour_choose <= 3'b111;
-		end
-		// Down
-		else if (counter == 4'b0011) begin
-			x_choose <= 8'b01001110;
-			y_choose <= 7'b0111110;
-			colour_choose <= 3'b111;
-		end
-		// Left
-		else if (counter == 4'b0100) begin
-			x_choose <= 8'b01001010;
-			y_choose <= 7'b0111010;
-			colour_choose <= 3'b111;
-		end
-		else if (counter == 4'b1111) begin
-			counter <= 4'b0000;
-		end
-		else begin
-		// Up
-			if (select_arrow == 4'b0000) begin
-				x_choose <= 8'b01001110;
-				y_choose <= 7'b0110110;
-				colour_choose <= 3'b111;
-				end
-			// Right
-			else if (select_arrow == 4'b0001) begin
-				x_choose <= 8'b01010010;
-				y_choose <= 7'b0111010;
-				colour_choose <= 3'b111;
-				end
-			// Down
-			else if (select_arrow == 4'b0010) begin
-				x_choose <= 8'b01001110;
-				y_choose <= 7'b0111110;
-				colour_choose <= 3'b111;
-				end
-			// Left
-			else if (select_arrow == 4'b0011) begin
-				x_choose <= 8'b01001010;
-				y_choose <= 7'b0111010;
-				colour_choose <= 3'b111;
-				end
-			// Reset to white
-			else 
-				counter <= 4'b0000;
-		end
-		counter <= counter + 1'b1;
-	end
-	
-	// Arrow Selection
+		// Arrow Selection
 	select_arrow sa(
 		.clock(CLOCK_50),
 		.up(~KEY[0]),
 		.right(~KEY[1]),
 		.down(~KEY[2]),
 		.left(~KEY[3]),
-		.direction_out(select_arrow)
+		.direction_out(selected_arrow),
+		.clicked(clicked)
 	);
+	
+	//counter
+	always @(posedge CLOCK_50) begin
+//		counter <= counter_save;
+		if (!clicked) begin
+			counter <= 4'b0000;
+		// Up
+			if (counter == 4'b0001) begin
+				x_choose <= 8'b01001110;
+				y_choose <= 7'b0110110;
+				colour_choose <= 3'b111;
+			end
+			// Right
+			else if (counter == 4'b0010) begin
+				x_choose <= 8'b01010010;
+				y_choose <= 7'b0111010;
+				colour_choose <= 3'b111;
+			end
+			// Down
+			else if (counter == 4'b0011) begin
+				x_choose <= 8'b01001110;
+				y_choose <= 7'b0111110;
+				colour_choose <= 3'b111;
+			end
+			// Left
+			else if (counter == 4'b0100) begin
+				x_choose <= 8'b01001010;
+				y_choose <= 7'b0111010;
+				colour_choose <= 3'b111;
+			end
+			else if (counter == 4'b1111) begin
+				counter <= 4'b0000;
+			end
+			counter <= counter + 1'b1;
+		end
+		else begin
+		// Up
+				if (selected_arrow == 2'b00) begin
+					x_choose <= 8'b01001110;
+					y_choose <= 7'b0110110;
+					colour_choose <= 3'b010;
+					end
+				// Right
+				else if (selected_arrow == 2'b01) begin
+					x_choose <= 8'b01010010;
+					y_choose <= 7'b0111010;
+					colour_choose <= 3'b010;
+					end
+				// Down
+				else if (selected_arrow == 2'b10) begin
+					x_choose <= 8'b01001110;
+					y_choose <= 7'b0111110;
+					colour_choose <= 3'b010;
+					end
+				// Left
+				else if (selected_arrow == 2'b11) begin
+					x_choose <= 8'b01001010;
+					y_choose <= 7'b0111010;
+					colour_choose <= 3'b010;
+					end
+				end
+		
+	end
+	
+//	assign counter_save = counter;
 	
 	// Instansiate datapath
 	datapath d0(
@@ -155,6 +162,16 @@ module SimonSays(
 		.y_out(y), 
 		.colour_out(colour)
 	);
+	
+//	fsmachine fsm(
+//		.reset_n(resetn),
+//		.clock(CLOCK_50),
+//		.direction(selected_arrow),
+//		.clicked(clicked),
+//		.out_x(x_choose),
+//		.out_y(y_choose),
+//		.out_color(colour_choose),
+//		);
 
 //    // Instansiate FSM control
 //	 controller c0(
@@ -167,3 +184,19 @@ module SimonSays(
 //		.controlC(ld_c), 
 	
 endmodule
+
+//// Up
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0110110
+//
+//// Right
+//x_choose <= 8'b01010010
+//y_choose <= 7'b0111010
+//
+//// Down
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0111110
+//
+//// Left
+//x_choose <= 8'b01001010
+//y_choose <= 7'b0111010
