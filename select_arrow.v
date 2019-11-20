@@ -11,7 +11,8 @@ module select_arrow(
 						right, 
 						down, 
 						left, 
-						direction_out
+						direction_out,
+						clicked
 						);
 	// clock to continuously update 
 	input up;
@@ -19,17 +20,33 @@ module select_arrow(
 	input down;
 	input left;
 	input clock;
-	output reg [2:0]direction_out; 
+	output reg [1:0]direction_out; 
+	output reg clicked;
 	
 	wire [3:0] direction;
 	assign direction = {up, right, down, left};
 	
 	always @(posedge clock) 
 		case (direction)
-			4'b1000: direction_out <= 3'b000; // If up is pressed, arrow is up
-			4'b0100: direction_out <= 3'b001; // If right is pressed, arrow is right
-			4'b0010: direction_out <= 3'b010; // If down is pressed, arrow is down
-			4'b0001: direction_out <= 3'b011; // If left is pressed, arrow is left
-			default: direction_out <= 3'b111; // else, we do nothing 
+			4'b1000: begin
+				direction_out <= 2'b00; // If up is pressed, arrow is up
+				clicked <= 1;
+			end
+			4'b0100: begin
+				direction_out <= 2'b01; // If right is pressed, arrow is right
+				clicked <= 1;
+			end
+			4'b0010: begin
+				direction_out <= 2'b10; // If down is pressed, arrow is down
+				clicked <= 1;
+			end
+			4'b0001: begin
+				direction_out <= 2'b11; // If left is pressed, arrow is left
+				clicked <= 1;
+			end
+			default: begin
+				direction_out <= 2'b00;
+				clicked <= 0;
+			end
 		endcase 
 endmodule 
