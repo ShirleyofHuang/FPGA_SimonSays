@@ -9,11 +9,11 @@ module fsmachine(
 					);
 	input reset_n, clock, clicked;
 	input [2:0]direction; 
-	output reg out_x;
-	output reg out_y;
-	output reg out_color;
+	output reg [7:0] out_x;
+	output reg [6:0] out_y;
+	output reg [2:0] out_color;
 
-	reg[2:0] current_state, next_state;
+	reg[3:0] current_state, next_state;
 	
 	localparam DRAW_UP = 4'b0000,
 					DRAW_DOWN = 4'b0001,
@@ -36,7 +36,7 @@ module fsmachine(
 		end 
 	end
 		
-	always @(*)
+	always @(posedge clock)
 		begin:state_table
 		case(current_state)
 			DRAW_UP: next_state = DRAW_DOWN;
@@ -53,16 +53,17 @@ module fsmachine(
 				next_state = CHANGE_RIGHT;
 			else if (direction == 2'b11)
 				next_state = CHANGE_LEFT;
+			$display("next_state:%h",next_state);
 			end
-			CHANGE_UP: next_state = clicked? CHANGE_UP:READY_CHANGE;
-			CHANGE_DOWN: next_state = clicked? CHANGE_DOWN: READY_CHANGE;
-			CHANGE_RIGHT: next_state = clicked? CHANGE_RIGHT: READY_CHANGE;
-			CHANGE_LEFT: next_state = clicked? CHANGE_LEFT: READY_CHANGE;
+			CHANGE_UP: next_state = clicked? CHANGE_UP:DRAW_UP;
+			CHANGE_DOWN: next_state = clicked? CHANGE_DOWN: DRAW_UP;
+			CHANGE_RIGHT: next_state = clicked? CHANGE_RIGHT: DRAW_UP;
+			CHANGE_LEFT: next_state = clicked? CHANGE_LEFT: DRAW_UP;
 			
 		endcase 
 		end 
 			
-	always @(*)
+	always @(posedge clock)
 		begin
 		out_color = 3'b111; 
 		case(current_state)
@@ -87,8 +88,8 @@ module fsmachine(
 				out_color <= 3'b111;
 				end
 			READY_CHANGE : begin
-				out_x <= 8'b00000000;
-				out_y <= 7'b0000000;
+				out_x <= 8'b01001010;
+				out_y <= 7'b0111010;
 				out_color <= 3'b111;
 				end
 			UPDATE_COLOR:begin
