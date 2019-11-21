@@ -86,68 +86,68 @@ module SimonSays(
 		.clicked(clicked)
 	);
 	
-	//counter
-	always @(posedge CLOCK_50) begin
-//		counter <= counter_save;
-		if (!clicked) begin
-			counter <= 4'b0000;
-		// Up
-			if (counter == 4'b0001) begin
-				x_choose <= 8'b01001110;
-				y_choose <= 7'b0110110;
-				colour_choose <= 3'b111;
-			end
-			// Right
-			else if (counter == 4'b0010) begin
-				x_choose <= 8'b01010010;
-				y_choose <= 7'b0111010;
-				colour_choose <= 3'b111;
-			end
-			// Down
-			else if (counter == 4'b0011) begin
-				x_choose <= 8'b01001110;
-				y_choose <= 7'b0111110;
-				colour_choose <= 3'b111;
-			end
-			// Left
-			else if (counter == 4'b0100) begin
-				x_choose <= 8'b01001010;
-				y_choose <= 7'b0111010;
-				colour_choose <= 3'b111;
-			end
-			else if (counter == 4'b1111) begin
-				counter <= 4'b0000;
-			end
-			counter <= counter + 1'b1;
-		end
-		else begin
-		// Up
-				if (selected_arrow == 2'b00) begin
-					x_choose <= 8'b01001110;
-					y_choose <= 7'b0110110;
-					colour_choose <= 3'b010;
-					end
-				// Right
-				else if (selected_arrow == 2'b01) begin
-					x_choose <= 8'b01010010;
-					y_choose <= 7'b0111010;
-					colour_choose <= 3'b010;
-					end
-				// Down
-				else if (selected_arrow == 2'b10) begin
-					x_choose <= 8'b01001110;
-					y_choose <= 7'b0111110;
-					colour_choose <= 3'b010;
-					end
-				// Left
-				else if (selected_arrow == 2'b11) begin
-					x_choose <= 8'b01001010;
-					y_choose <= 7'b0111010;
-					colour_choose <= 3'b010;
-					end
-				end
-		
-	end
+//	//counter
+//	always @(posedge CLOCK_50) begin
+////		counter <= counter_save;
+//		if (!clicked) begin
+//			counter <= 4'b0000;
+//		// Up
+//			if (counter == 4'b0001) begin
+//				x_choose <= 8'b01001110;
+//				y_choose <= 7'b0110110;
+//				colour_choose <= 3'b111;
+//			end
+//			// Right
+//			else if (counter == 4'b0010) begin
+//				x_choose <= 8'b01010010;
+//				y_choose <= 7'b0111010;
+//				colour_choose <= 3'b111;
+//			end
+//			// Down
+//			else if (counter == 4'b0011) begin
+//				x_choose <= 8'b01001110;
+//				y_choose <= 7'b0111110;
+//				colour_choose <= 3'b111;
+//			end
+//			// Left
+//			else if (counter == 4'b0100) begin
+//				x_choose <= 8'b01001010;
+//				y_choose <= 7'b0111010;
+//				colour_choose <= 3'b111;
+//			end
+//			else if (counter == 4'b1111) begin
+//				counter <= 4'b0000;
+//			end
+//			counter <= counter + 1'b1;
+//		end
+//		else begin
+//		// Up
+//				if (selected_arrow == 2'b00) begin
+//					x_choose <= 8'b01001110;
+//					y_choose <= 7'b0110110;
+//					colour_choose <= 3'b010;
+//					end
+//				// Right
+//				else if (selected_arrow == 2'b01) begin
+//					x_choose <= 8'b01010010;
+//					y_choose <= 7'b0111010;
+//					colour_choose <= 3'b001;
+//					end
+//				// Down
+//				else if (selected_arrow == 2'b10) begin
+//					x_choose <= 8'b01001110;
+//					y_choose <= 7'b0111110;
+//					colour_choose <= 3'b100;
+//					end
+//				// Left
+//				else if (selected_arrow == 2'b11) begin
+//					x_choose <= 8'b01001010;
+//					y_choose <= 7'b0111010;
+//					colour_choose <= 3'b110;
+//					end
+//				end
+//		
+//	end
 	
 //	assign counter_save = counter;
 	
@@ -157,21 +157,23 @@ module SimonSays(
 		.resetn(resetn), 
 		.x_in(x_choose),
 		.y_in(y_choose),
+		.clicked(clicked),
 		.colour_in(colour_choose),  
 		.x_out(x), 
 		.y_out(y), 
 		.colour_out(colour)
 	);
 	
-//	fsmachine fsm(
-//		.reset_n(resetn),
-//		.clock(CLOCK_50),
-//		.direction(selected_arrow),
-//		.clicked(clicked),
-//		.out_x(x_choose),
-//		.out_y(y_choose),
-//		.out_color(colour_choose),
-//		);
+	fsmachine fsm(
+		.reset_n(resetn),
+		.clock(CLOCK_50),
+		.direction(selected_arrow),
+		.clicked(clicked),
+		.out_x(x_choose),
+		.out_y(y_choose),
+		.out_color(colour_choose),
+		);
+	
 
 //    // Instansiate FSM control
 //	 controller c0(
@@ -200,3 +202,4 @@ endmodule
 //// Left
 //x_choose <= 8'b01001010
 //y_choose <= 7'b0111010
+
