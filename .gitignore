@@ -1,5 +1,8 @@
 SimonSays.qws
 
+#Ignore work folder
+/work/*
+
 #Ignore backup files
 *.bak
 
