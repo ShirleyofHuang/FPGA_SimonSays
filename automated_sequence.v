@@ -1,5 +1,5 @@
 module automated_sequence(clock, reset_n, begin_signal, sequence, arrow_direction, stop);
-    input clock, begin_signal;
+    input clock, begin_signal, reset_n;
     input [8:0]sequence;
     output [1:0]arrow_direction; 
     output stop;
