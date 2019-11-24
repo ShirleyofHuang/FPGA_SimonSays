@@ -1,3 +1,4 @@
+#Ignore qws for project
 SimonSays.qws
 
 #Ignore work folder
@@ -9,3 +10,6 @@ SimonSays.qws
 #Ignore project flock file
 /db
 .SimonSays.quiproj.15092.rdr.flock
+
+#Ignore vsim
+vsim.wlf
