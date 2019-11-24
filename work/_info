@@ -1,0 +1,31 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/alexx/Documents/Programming/QuartusSchematics/CSC258/FinalProject/FPGA_SimonSays
+vfsmachine
+!s110 1574299592
+!i10b 1
+!s100 A@MFGa19mY2D:ZP2F6H9X0
+I=857MTOl2SbNdf7QDahe[3
+VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1574299370
+8fsmachine.v
+Ffsmachine.v
+L0 1
+OV;L;10.5b;63
+r1
+!s85 0
+31
+!s108 1574299592.000000
+!s107 fsmachine.v|
+!s90 -reportprogress|300|-timescale|1ns/1ns|fsmachine.v|
+!i113 1
+o-timescale 1ns/1ns
+tCvgOpt 0
