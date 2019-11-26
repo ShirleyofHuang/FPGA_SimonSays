@@ -64,6 +64,30 @@ module SimonSays(
 	// Put your code here. Your code should produce signals x,y,colour and writeEn/plot
 	// for the VGA controller, in addition to any other functionality your design may require.
     
+	// Automated sequence output
+	wire [1:0] auto_arrow;
+	wire stop_auto_signal;
+	clock, reset_n, begin_signal, sequence, arrow_direction, stop
+	automated_sequence auto_seq(
+		.clock(CLOCK_50),
+		.reset_n(SW[0]),
+		.begin_signal(SW[1]),
+		.sequence(00011011),
+		.arrow_direction(auto_arrow);
+		.stop(stop_auto_signal)
+	); 
+
+	automated_fsm auto_fsm(
+		.reset_n(SW[0]),
+		.clock(CLOCK_50),
+		.direction(auto_arrow),
+		.stop(stop_auto_signal),
+		.begin(SW[1]),
+		.out_x(x_choose),
+		.out_y(y_choose),
+		.out_color(colour_choose)
+	);
+
 	wire [1:0] selected_arrow;
 	wire clicked;
 	
@@ -86,6 +110,60 @@ module SimonSays(
 		.clicked(clicked)
 	);
 	
+	
+	// Instansiate datapath
+	datapath d0(
+		.clk(CLOCK_50), 
+		.resetn(resetn), 
+		.x_in(x_choose),
+		.y_in(y_choose),
+		.clicked(clicked),
+		.colour_in(colour_choose),  
+		.x_out(x), 
+		.y_out(y), 
+		.colour_out(colour)
+	);
+	
+	fsmachine fsm(
+		.reset_n(resetn),
+		.clock(CLOCK_50),
+		.begin(stop_auto_signal),
+		.direction(selected_arrow),
+		.clicked(clicked),
+		.out_x(x_choose),
+		.out_y(y_choose),
+		.out_color(colour_choose),
+		);
+	
+
+//    // Instansiate FSM control
+//	 controller c0(
+//		.go(!KEY[3]), 
+//		.reset_n(resetn), 
+//		.clock(CLOCK_50), 
+//		.draw(!KEY[1]), 
+//		.controlA(ld_x), 
+//		.controlB(ld_y), 
+//		.controlC(ld_c), 
+	
+endmodule
+
+//// Up
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0110110
+//
+//// Right
+//x_choose <= 8'b01010010
+//y_choose <= 7'b0111010
+//
+//// Down
+//x_choose <= 8'b01001110
+//y_choose <= 7'b0111110
+//
+//// Left
+//x_choose <= 8'b01001010
+//y_choose <= 7'b0111010
+
 //	//counter
 //	always @(posedge CLOCK_50) begin
 ////		counter <= counter_save;
@@ -150,56 +228,3 @@ module SimonSays(
 //	end
 	
 //	assign counter_save = counter;
-	
-	// Instansiate datapath
-	datapath d0(
-		.clk(CLOCK_50), 
-		.resetn(resetn), 
-		.x_in(x_choose),
-		.y_in(y_choose),
-		.clicked(clicked),
-		.colour_in(colour_choose),  
-		.x_out(x), 
-		.y_out(y), 
-		.colour_out(colour)
-	);
-	
-	fsmachine fsm(
-		.reset_n(resetn),
-		.clock(CLOCK_50),
-		.direction(selected_arrow),
-		.clicked(clicked),
-		.out_x(x_choose),
-		.out_y(y_choose),
-		.out_color(colour_choose),
-		);
-	
-
-//    // Instansiate FSM control
-//	 controller c0(
-//		.go(!KEY[3]), 
-//		.reset_n(resetn), 
-//		.clock(CLOCK_50), 
-//		.draw(!KEY[1]), 
-//		.controlA(ld_x), 
-//		.controlB(ld_y), 
-//		.controlC(ld_c), 
-	
-endmodule
-
-//// Up
-//x_choose <= 8'b01001110
-//y_choose <= 7'b0110110
-//
-//// Right
-//x_choose <= 8'b01010010
-//y_choose <= 7'b0111010
-//
-//// Down
-//x_choose <= 8'b01001110
-//y_choose <= 7'b0111110
-//
-//// Left
-//x_choose <= 8'b01001010
-//y_choose <= 7'b0111010
-

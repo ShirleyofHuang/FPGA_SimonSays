@@ -1,15 +1,15 @@
-module fsmachine(
+module automated_fsm(
 					reset_n,
 					clock, 
-					begin,
 					direction, 
-					clicked, 
+					stop,
+                    begin, 
 					out_x, 
 					out_y, 
 					out_color
 					);
-	input reset_n, clock, clicked;
-	input [2:0]direction; 
+	input reset_n, clock, stop, begin;
+	input [1:0]direction; 
 	output reg [7:0] out_x;
 	output reg [6:0] out_y;
 	output reg [2:0] out_color;
@@ -24,13 +24,14 @@ module fsmachine(
 					CHANGE_DOWN = 4'b0101,
 					CHANGE_RIGHT = 4'b0110,
 					CHANGE_LEFT = 4'b0111,
-					READY_CHANGE = 4'b1000,
+					AUTOMATIC_SEQUENCE_REST = 4'b1000,
 					UPDATE_COLOR = 4'b1001;
-					START_WAIT = 4'b1010;
+//					BEGIN_WAIT = 3'b100;
+
 	always @(posedge clock) 
 	begin
 		if (!reset_n) begin
-			current_state <= START_WAIT;
+			current_state <= BEGIN_WAIT;
 			end
 		else begin
 			current_state <= next_state;
@@ -40,13 +41,12 @@ module fsmachine(
 	always @(posedge clock)
 		begin:state_table
 		case(current_state)
-			START_WAIT: next_state = begin? DRAW_UP: START_WAIT; 
 			DRAW_UP: next_state = DRAW_DOWN;
 			DRAW_DOWN: next_state = DRAW_LEFT;
 			DRAW_LEFT: next_state = DRAW_RIGHT;
-			DRAW_RIGHT: next_state = READY_CHANGE;
-			READY_CHANGE: next_state = clicked? UPDATE_COLOR:READY_CHANGE;
-			UPDATE_COLOR : begin
+			DRAW_RIGHT: next_state = begin? AUTOMATIC_SEQUENCE_REST, DRAW_RIGHT;
+			AUTOMATIC_SEQUENCE_REST: next_state = stop? AUTOMATIC_SEQUENCE_REST: UPDATE_COLOR;
+            UPDATE_COLOR: begin
 			if (direction == 2'b00)
 				next_state = CHANGE_UP;
 			else if (direction == 2'b01)
@@ -55,12 +55,11 @@ module fsmachine(
 				next_state = CHANGE_RIGHT;
 			else if (direction == 2'b11)
 				next_state = CHANGE_LEFT;
-			$display("next_state:%h",next_state);
 			end
-			CHANGE_UP: next_state = clicked? CHANGE_UP:DRAW_UP;
-			CHANGE_DOWN: next_state = clicked? CHANGE_DOWN: DRAW_UP;
-			CHANGE_RIGHT: next_state = clicked? CHANGE_RIGHT: DRAW_UP;
-			CHANGE_LEFT: next_state = clicked? CHANGE_LEFT: DRAW_UP;
+			CHANGE_UP: next_state = DRAW_UP;
+			CHANGE_DOWN: next_state = DRAW_UP;
+			CHANGE_RIGHT: next_state = DRAW_UP;
+			CHANGE_LEFT: next_state = DRAW_UP;
 			
 		endcase 
 		end 
@@ -89,7 +88,7 @@ module fsmachine(
 				out_y <= 7'b0111010;
 				out_color <= 3'b111;
 				end
-			READY_CHANGE : begin
+			AUTOMATIC_SEQUENCE_REST : begin
 				out_x <= 8'b01001010;
 				out_y <= 7'b0111010;
 				out_color <= 3'b111;
