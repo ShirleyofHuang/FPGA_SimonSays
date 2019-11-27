@@ -67,7 +67,6 @@ module SimonSays(
 	// Automated sequence output
 	wire [1:0] auto_arrow;
 	wire stop_auto_signal;
-	clock, reset_n, begin_signal, sequence, arrow_direction, stop
 	// automated_sequence auto_seq(
 	// 	.clock(CLOCK_50),
 	// 	.reset_n(SW[0]),
@@ -77,6 +76,13 @@ module SimonSays(
 	// 	.stop(stop_auto_signal)
 	// ); 
 
+	wire [7:0]auto_x;
+	wire [6:0]auto_y;
+	wire [2:0]auto_color;
+
+	wire [7:0]manual_x;
+	wire [6:0]manual_y;
+	wire [2:0]manual_color;
 	
 	mux_sequence_select auto_sequence(
 		.sequence(11001100),
@@ -91,16 +97,16 @@ module SimonSays(
 		.direction(auto_arrow),
 		.stop(stop_auto_signal),
 		.begin(SW[1]),
-		.out_x(x_choose),
-		.out_y(y_choose),
-		.out_color(colour_choose)
+		.out_x(x_auto),
+		.out_y(y_auto),
+		.out_color(auto_color)
 	);
 
 	wire [1:0] selected_arrow;
 	wire clicked;
-	
-	wire [3:0] counter_save;
-	assign counter_save = 4'b0000;
+
+	wire done;
+	wire correct;
 	
 	reg [3:0]counter;
 	reg [2:0] colour_choose;
@@ -138,9 +144,32 @@ module SimonSays(
 		.begin(stop_auto_signal),
 		.direction(selected_arrow),
 		.clicked(clicked),
-		.out_x(x_choose),
-		.out_y(y_choose),
-		.out_color(colour_choose),
+		.out_x(x_manual),
+		.out_y(y_manual),
+		.out_color(manual_color)
+		);
+
+		combined_fsm combined(
+			.clock(CLOCK_50),
+			.x_auto(x_auto),
+			.y_auto(y_auto),
+			.color_auto(auto_color),
+			.x_manual(x_manual),
+			.y_manual(y_manual),
+			.color_manual(manual_color), 
+			.stop(stop_auto_signal), 
+			.x_final(x_choose), 
+			.y_final(y_choose), 
+			.color_final(colour_choose)
+			);
+		
+		comparator c0(
+			.clock(CLOCK_50), 
+			.enable(clicked), 
+			.sequence(11001100), 
+			.direction(selected_arrow), 
+			.done(done), 
+			.correctness(correct)
 		);
 	
 

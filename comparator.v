@@ -1,4 +1,11 @@
-module comparator(clock, enable, sequence, direction, done, correctness);
+module comparator(
+                clock, 
+                enable, 
+                sequence, 
+                direction, 
+                done, 
+                correctness
+                );
     input enable;
 	input clock;
     input [7:0]sequence;
