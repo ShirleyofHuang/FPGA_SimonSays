@@ -3,12 +3,12 @@ module automated_fsm(
 					clock, 
 					direction, 
 					stop,
-                    begin, 
+                    begin_signal, 
 					out_x, 
 					out_y, 
 					out_color
 					);
-	input reset_n, clock, stop, begin;
+	input reset_n, clock, stop, begin_signal;
 	input [1:0]direction; 
 	output reg [7:0] out_x;
 	output reg [6:0] out_y;
@@ -31,7 +31,7 @@ module automated_fsm(
 	always @(posedge clock) 
 	begin
 		if (!reset_n) begin
-			current_state <= BEGIN_WAIT;
+			current_state <= DRAW_UP;
 			end
 		else begin
 			current_state <= next_state;
@@ -44,7 +44,7 @@ module automated_fsm(
 			DRAW_UP: next_state = DRAW_DOWN;
 			DRAW_DOWN: next_state = DRAW_LEFT;
 			DRAW_LEFT: next_state = DRAW_RIGHT;
-			DRAW_RIGHT: next_state = begin? AUTOMATIC_SEQUENCE_REST, DRAW_RIGHT;
+			DRAW_RIGHT: next_state = begin_signal? AUTOMATIC_SEQUENCE_REST, DRAW_RIGHT;
 			AUTOMATIC_SEQUENCE_REST: next_state = stop? AUTOMATIC_SEQUENCE_REST: UPDATE_COLOR;
             UPDATE_COLOR: begin
 			if (direction == 2'b00)

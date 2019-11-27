@@ -1,4 +1,10 @@
-module shift_sequence(clock, enable, sequence, new_sequence, correct_direction);
+module shift_sequence(
+                    clock, 
+                    enable, 
+                    sequence, 
+                    new_sequence, 
+                    correct_direction
+                    );
     input [5:0]sequence;
     input clock, enable; 
     output [1:0]correct_direction;
