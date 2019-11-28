@@ -3,12 +3,13 @@ module automated_fsm(
 					clock, 
 					direction, 
 					stop,
-                    begin_signal, 
+          begin_signal, 
+					sync_counter,
 					out_x, 
 					out_y, 
 					out_color
 					);
-	input reset_n, clock, stop, begin_signal;
+	input reset_n, clock, stop, begin_signal, sync_counter;
 	input [1:0]direction; 
 	output reg [7:0] out_x;
 	output reg [6:0] out_y;
@@ -38,13 +39,13 @@ module automated_fsm(
 		end 
 	end
 		
-	always @(posedge clock)
+	always @(posedge sync_counter)
 		begin:state_table
 		case(current_state)
 			DRAW_UP: next_state = DRAW_DOWN;
 			DRAW_DOWN: next_state = DRAW_LEFT;
 			DRAW_LEFT: next_state = DRAW_RIGHT;
-			DRAW_RIGHT: next_state = begin_signal? AUTOMATIC_SEQUENCE_REST, DRAW_RIGHT;
+			DRAW_RIGHT: next_state = begin_signal? AUTOMATIC_SEQUENCE_REST: DRAW_RIGHT;
 			AUTOMATIC_SEQUENCE_REST: next_state = stop? AUTOMATIC_SEQUENCE_REST: UPDATE_COLOR;
             UPDATE_COLOR: begin
 			if (direction == 2'b00)
@@ -120,17 +121,17 @@ module automated_fsm(
 endmodule 
 
 //// Up
-//x_choose <= 8'b01001110
-//y_choose <= 7'b0110110
+//x_choose <= 8'b01001110 // 78
+//y_choose <= 7'b0110110 // 54
 //
 //// Right
-//x_choose <= 8'b01010010
-//y_choose <= 7'b0111010
+//x_choose <= 8'b01010010 //82
+//y_choose <= 7'b0111010 // 58
 //
 //// Down
-//x_choose <= 8'b01001110
-//y_choose <= 7'b0111110
+//x_choose <= 8'b01001110 // 78
+//y_choose <= 7'b0111110 // 62
 //
 //// Left
-//x_choose <= 8'b01001010
-//y_choose <= 7'b0111010
+//x_choose <= 8'b01001010 // 74
+//y_choose <= 7'b0111010 // 58

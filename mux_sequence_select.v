@@ -1,11 +1,19 @@
-module mux_sequence_select(sequence, begin_signal, clock, direction_arrow, stop);
+module mux_sequence_select(
+                        sequence, 
+                        begin_signal, 
+                        clock, 
+                        direction_arrow, 
+                        stop,
+                        out_signal
+                        );
     input [7:0]sequence;
     input begin_signal;
     input clock;
     output [1:0]direction_arrow;
     output stop;
+    output reg count;
 
-    reg out_signal;
+    output reg out_signal;
     reg [4:0]count = 5'b00000;
 	//reg [19:0] count = 20'b0;
     always @(posedge clock) begin
