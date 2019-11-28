@@ -13,7 +13,7 @@ module shift_sequence(
     reg [5:0]s;
     always @(posedge clock) begin 
         if (enable)
-            s <= sequence << 2;
+            s <= sequence << 2'b11;
        end 
 	
 	assign new_sequence = s;

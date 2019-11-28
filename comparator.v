@@ -11,7 +11,7 @@ module comparator(
     input [7:0]sequence;
     input [1:0]direction;
     output correctness;
-    output reg done;
+    output reg done = 0;
     
     reg [2:0]count = 3'b000;
     always @(posedge enable) begin

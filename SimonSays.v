@@ -83,20 +83,24 @@ module SimonSays(
 	wire [7:0]manual_x;
 	wire [6:0]manual_y;
 	wire [2:0]manual_color;
+
+	wire sync_counter;
 	
 	mux_sequence_select auto_sequence(
 		.sequence(11001100),
 		.begin_signal(SW[1]),
 		.clock(CLOCK_50),
 		.direction_arrow(auto_arrow),
-		.stop(stop_auto_signal)
+		.stop(stop_auto_signal),
+		.out_signal(sync_counter)
 	);
 	automated_fsm auto_fsm(
 		.reset_n(SW[0]),
 		.clock(CLOCK_50),
 		.direction(auto_arrow),
 		.stop(stop_auto_signal),
-		.begin(SW[1]),
+		.begin_signal(SW[1]),
+		.sync(sync_counter),
 		.out_x(x_auto),
 		.out_y(y_auto),
 		.out_color(auto_color)
@@ -141,7 +145,7 @@ module SimonSays(
 	fsmachine fsm(
 		.reset_n(resetn),
 		.clock(CLOCK_50),
-		.begin(stop_auto_signal),
+		.begin_signal(stop_auto_signal),
 		.direction(selected_arrow),
 		.clicked(clicked),
 		.out_x(x_manual),

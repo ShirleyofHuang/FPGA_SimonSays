@@ -1,7 +1,7 @@
 module fsmachine(
 					reset_n,
 					clock, 
-					begin,
+					begin_signal,
 					direction, 
 					clicked, 
 					out_x, 
@@ -40,7 +40,7 @@ module fsmachine(
 	always @(posedge clock)
 		begin:state_table
 		case(current_state)
-			START_WAIT: next_state = begin? DRAW_UP: START_WAIT; 
+			START_WAIT: next_state = begin_signal? DRAW_UP: START_WAIT; 
 			DRAW_UP: next_state = DRAW_DOWN;
 			DRAW_DOWN: next_state = DRAW_LEFT;
 			DRAW_LEFT: next_state = DRAW_RIGHT;
